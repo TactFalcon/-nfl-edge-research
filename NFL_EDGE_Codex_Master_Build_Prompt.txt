@@ -1,0 +1,446 @@
+# NFL EDGE — MASTER CODEX BUILD PROMPT
+
+**Paste this entire document into a Codex Cloud task for a new private GitHub repository named `nfl-edge-research`.** You are implementing a research platform; you are **not** placing wagers. Current NFL season for the initial audit: **2026**. Treat all source freshness as a runtime question, not as a fact supplied by this prompt.
+
+---
+
+## 0. MISSION, ROLE, AND NON-NEGOTIABLE OPERATING PHILOSOPHY
+
+You are my principal NFL quantitative research engineer, Python architect, data-quality investigator, film-and-scheme research organizer, applied statistician, model auditor, and independent devil's advocate. **Execute work in the repository. Do not stop at a proposed plan.** Set up a *working* research system, test it, commit it, and then build complexity only when supported by verified data and measured benefits.
+
+Call the project **NFL EDGE**. Its purpose is to deliver exceptionally thorough, reproducible research into NFL games and player props: injuries, personnel, offensive and defensive formations, coaching, coverage and pass rush, player utilization, player-versus-defender matchups, line play, situational tendencies, historical distributions, model probability and uncertainty, sportsbook pricing, live opportunities, and a disciplined decision to **PASS** when no credible pricing advantage is established.
+
+My constraints: I primarily use an **iPhone**, have a **$20/month ChatGPT Plus subscription**, have **limited spare time**, have connected **GitHub**, and **do not approve paid third-party APIs, external LLM charges, cloud hosting costs, or subscriptions**. Codex Cloud has its own usage and environment limitations. Design for short natural-language Codex requests, bounded computation, simple maintenance, reproducible storage, and free legitimate sources. Never presume you can run as a 24/7 agent; separate Codex tasks have isolated workspaces.
+
+This must feel like **an excellent independent NFL research department**, not a generic pick-generator. A lengthy output is not synonymous with quality. Study many candidate angles but spend report space on findings actually material to probability, risk, and price. *Never manufacture a bet, assume you are beating bookmakers, or claim a model is profitable because it backtested well on one sample.* Successful outputs include PASS on one game or an entire slate.
+
+**Five permanent commandments:** (1) evidence over story; (2) verified timestamped data over model memory; (3) probabilities with uncertainty over false precision; (4) offered price and robust margin over hit-rate streaks; (5) persistent, correctly reconciled feedback over hindsight and emotional decisions.
+
+**Research and paper mode only.** Do not access sportsbook credentials, place bets, use bookmaker automation, or initiate spending.
+
+---
+
+## 1. EXACT UPSTREAM REPOSITORIES, PURPOSES, AND INSTALLATION STRATEGY
+
+Use these existing public projects rather than trying to write a data ecosystem from scratch:
+
+**Primary installed Python library:** `https://github.com/nflverse/nflreadpy` — install the stable published package (`uv add nflreadpy` or its proven equivalent), inspect current APIs, and use it for nflverse play-by-play, game/player stats, schedules, weekly rosters, injuries, snap counts, available advanced stats, FTN charting, and historical participation data. The specific exposed loader functions and schema must be verified from the installed version. **Do not clone nflreadpy merely to use its library.**
+
+**Official datasets and data-release provenance:** `https://github.com/nflverse/nflverse-data` — retrieve via nflreadpy or official published releases, not by cloning huge archives to Git. Attribute nflverse/FTN as required by data licenses.
+
+**Play-by-play computation methodology:** `https://github.com/nflverse/nflverse-pbp` — read relevant public processing documentation and field definitions when implementing EPA, success rate, game IDs, player IDs, play types, or opportunity calculations. Consult, do not clone unless required for a specific documented reason.
+
+**Optional charting upstream:** `https://github.com/nflverse/nflverse-ftn` and the official FTN charting dictionary at `https://nflreadr.nflverse.com/articles/dictionary_ftn_charting.html`. Use nflreadpy's FTN data loader for the subset actually released. Distinguish it from participation data.
+
+**Optional future odds integration, NOT required to run:** `https://github.com/the-odds-api/samples-python` — inspect examples only and activate only with my explicit approval and known quota/cost. Initial odds are manually provided with source and timestamp.
+
+**Useful methodological comparison, read-only:** `https://github.com/MaddocksJ27/NFL-Market-Efficiency` — audit its historical leakage controls, market comparisons, and negative findings. Do not import its conclusions as guaranteed truths or install it as a prediction engine.
+
+**Do not use as the primary engine:** `MirageGiri/SportsProps` (small unproven prototype) or `mattleonard16/nflalgorithm` (its public code omits core prediction modules). Inspect selectively for implementation ideas only after verification. Do not copy code without checking license and method. Avoid a large soccer-focused betting framework, auto-bettor, proprietary scrapers, or paid AI-agent stack merely because it has many GitHub stars.
+
+**Standard libraries:** Python 3.11 (or a supported modern version), `uv`, `polars`, `pyarrow`, `duckdb` or SQLite, `numpy`, `scipy`, `scikit-learn`, `statsmodels` where useful, `pydantic` for data contracts, `pytest`, and a simple reporting library. Install only necessary components. Pin/lock dependencies, write setup scripts, keep a `.env.example` with no secrets. Do not run third-party install scripts or executable sample code without a brief security review.
+
+**Licensing:** respect CC-BY, CC-BY-SA, provider attribution, rate limits, and redistribution limits. Never attempt to reconstruct private PFF/NGS tracking feeds by labeling guesses as official charting. Do not scrape paywalls or use unauthorized API endpoints.
+
+---
+
+## 2. FIRST-RUN EXECUTION: BUILD, NOT JUST DESIGN
+
+The first Codex task must do real work:
+
+1. Inspect working directory, Git remote, available GitHub access, Python version, network permissions, disk/runtime limits, and whether a Codex Cloud environment is published.
+2. Create a small `pyproject.toml`, lockfile, `.gitignore`, `AGENTS.md`, README, config file, source package, data catalog, research ledger, tests, and commands.
+3. Install the approved package, load **real** historic data and whichever 2026 weeks are actually published, and validate schema, row counts, date ranges and data freshness. If network is blocked, clearly report the exact blocked operation; do not quietly substitute fixtures.
+4. Implement at least one end-to-end game analysis (both teams), player usage analysis, explicit odds/EV calculation for supplied *illustrative test* odds, PASS validation, and saved report with sources/time.
+5. Implement ticket and leg ledger with correct cash-out and settlement math, support user-provided records, and document that sportsbook/account balances are separate from bet accounting.
+6. Implement tests, run them, report pass/fail/skip counts, make fixes, and commit working changes or open a PR. Never say a test passed unless it ran.
+7. Provide a concrete Stage 1 proof: actual data inventory, actual computed team metrics for a past completed game (no future leakage), report path, command to rerun, tests, committed files, exact things not implemented.
+8. Continue with subsequent incremental stages only as execution budget allows, and checkpoint before time/token limits. **Never leave a huge uncommitted task as the only record of progress.**
+
+Implement in **bounded milestones**, not a single fragile all-or-nothing sprint. If time is constrained, finish a tested Stage 1 rather than describing a magical Stage 4. Each stage must produce executable functionality and an honest acceptance report. Prompt must be stored in `docs/MASTER_SPEC.md`; permanent condensed operating rules in `AGENTS.md`.
+
+---
+
+## 3. PROJECT LAYOUT AND DURABLE MEMORY
+
+Use a lean, readable project structure:
+
+```
+AGENTS.md
+README.md
+pyproject.toml
+uv.lock
+.env.example
+config/research.yaml
+src/nfl_edge/
+  cli.py
+  data/{catalog.py,loaders.py,schemas.py,identity.py,quality.py,asof.py}
+  metrics/{teams.py,pace.py,player_usage.py,defense.py,ftn.py}
+  research/{sources.py,injuries.py,coaching.py,schemes.py,matchups.py,report.py,review.py}
+  models/{baseline.py,distributions.py,monte_carlo.py,calibration.py,validation.py}
+  markets/{odds.py,pricing.py,parlays.py,cashout.py}
+  ledger/{events.py,accounting.py,settlement.py,store.py}
+  learning/{postmortem.py,lessons.py,experiments.py}
+  types.py
+scripts/
+tests/{unit,integration,fixtures}/
+docs/{MASTER_SPEC.md,DATA_CATALOG.md,MODEL_CARD.md,SOURCE_MATRIX.md,OPERATIONS.md,LIMITATIONS.md,TEST_REPORT.md}
+reports/{YYYY-MM-DD}/
+memory/{CASE_STUDIES.md,LESSONS.md,EXPERIMENT_LOG.md}
+ledger/{research.jsonl,tickets.jsonl,transactions.jsonl,settlements.jsonl}
+data/   # ignore large external data/cache in Git
+```
+
+Adapt file layout where justified rather than creating empty placeholder modules. Versioned, human-readable, source-linked `memory/` records are the **canonical persistent project memory**; a lightweight SQLite FTS index is optional for search. Vector search/RAG embeddings are optional and not needed on day one. Keep canonical data in Git-tracked JSONL/Markdown or another reproducible persistent location. Avoid committing private account identifiers, credentials, personal details, or large proprietary raw datasets. The GitHub repo must be private for personal wager-history information. Define reconciliation if multiple isolated Codex tasks edit the same ledger.
+
+`AGENTS.md` MUST force future Codex sessions to: inspect data/source freshness; read the active model card; validate all claims; never infer missing man-zone/WR–CB data; use offered odds; run uncertainty/skeptical passes; say PASS; preserve original pregame predictions; never alter historical forecasts after outcome; run tests; update ledger only with verified settlement; commit work; never auto-bet or spend.
+
+---
+
+## 4. SOURCE HIERARCHY, AS-OF REPRODUCIBILITY, AND MISSING DATA
+
+Create `DATA_CATALOG.md` and machine-readable source catalog with field coverage and provenance. Discover actual columns at runtime. Document season start/end, latest complete week/game, expected update lag, licensing, source URL, retrieval UTC time, snapshot version/content hash, join IDs, and known limitations. Examples of sources to inventory: nflverse PBP, schedules, player stats, team stats, weekly rosters, player IDs, depth charts, injuries, snap counts, NGS weekly aggregates, historical participation, FTN charting, opportunity metrics, and legitimate publicly available official team/NFL injury reports or reputable sourced beat reports.
+
+**Critical data asymmetry:** NFLverse **participation** from 2023 onward (including defensive man/zone/coverage shell, personnel, players on play and primary route) is released **after all postseason games conclude**, not weekly in-season. It is generally unsuitable as if it were 2026 current-week coverage tracking. In contrast, **FTN charting** is updated during the season and covers fields such as motion, under-center/shotgun, box defenders, number of blitzers and rushers, play action, RPO, screen, primary-read classification, etc. It does NOT contain reliable defender assignment or detailed WR shadow coverage information merely because a user wants it. Verify the actual 29-field dictionary before claiming fields. Public NGS weekly aggregates do not equate to full commercial NGS tracking access.
+
+If publicly sourced weekly injury status, coaching schemes, current starters, or coverage usage cannot be reliably established, label **UNKNOWN / historical reference only**. A player/cornerback depth-chart matchup is a *potential assignment*, not a verified shadow rate. Zone coverage can involve several defenders; a receiver's success against man coverage on historical plays does not guarantee an exploitable matchup today. Any inferred film report must have a genuine source, date and explicit methodology; do not claim to have watched film if no video was analyzed.
+
+Every material analytical value must be typed as one of:
+
+- **OBSERVED:** source-provided factual measurement, with schema and timestamp.
+- **DERIVED:** reproducibly calculated from observed data, with formula and sample size.
+- **MODEL ESTIMATE:** distributional model result, uncertainty and version.
+- **SCOUTING/QUALITATIVE:** attributed sourced assessment, not an invented quantitative fact.
+- **PROJECTED / CONDITIONAL:** e.g. potential shadow CB or likely play-call package; include premises and confidence.
+- **UNAVAILABLE / STALE:** cannot support claim or market evaluation.
+
+Create strict no-leak `as_of` slicing: a research job with kickoff `T` may only use facts with publication/availability at or before `T`, not final statistics, retrospective PFF grades, confirmed starters published afterward, or future-season outcomes. Track both game event time and dataset publication timestamp. Do not backfill current-season data into prior forecasts without versioning.
+
+Current-season latest week must be checked on each refresh; do not hardcode the day or presume today's live stats are complete. Different feeds have different latency. Empty missing values are NOT zero.
+
+---
+
+## 5. NFL GAME/SCHEDULE, INJURY, AND IDENTITY FOUNDATIONS
+
+Use stable game IDs and player IDs; build validated crosswalks for team abbreviation changes, aliases, trades, players with matching surnames, and franchise histories. Identity matching must not silently match two people with similar names. Maintain season/week/timezone and local kickoff accurately; validate schedule changes and venue/roof.
+
+For injuries: collect injury designation, position, starter/backup relevance, practice participation, days on report, official game status, expected snap/workload limitations, rotation changes, and actual **as-of** report time. Separate official inactive list from speculation, and a return-to-play tag from full-health expectation. Player leaving during a game changes conditional usage and portfolio risks; probabilities should widen, not automatically pick another beneficiary with certainty.
+
+Build explicit **scenario analysis** for questionable players: healthy/full role, active limited, inactive/replacement, with probabilities only when justified by evidence; otherwise present separate conditional scenarios and PASS. Analyze impact on route share, first reads, touches, protection, coverage shell, tempo, and team efficiency. Distinguish the loss of CB1 versus a safety versus an edge defender; link effects to realistic offensive response.
+
+Official league/team injury sources and depth charts take precedence for status; beat reporters can add context but must be attributed with timestamps. Confirm coaches/coordinators each season rather than assuming last year’s staff and tendencies.
+
+---
+
+## 6. FULL TEAM-OFFENSE AND TEAM-DEFENSE PROFILE — BOTH SIDES
+
+For **every game**, investigate **both offenses against both defenses**, not one favored side. For all metrics include definition, rate denominator, rank, league percentile, raw numerator and denominator where useful, season and relevant recent splits, and opponent-strength caveat. Rankings vary by measure; never say “#28 rush defense” without specifying whether that means allowed yards/game, YPC, success rate, EPA/rush, and period.
+
+**Passing offense:** dropbacks/game, attempts/game, early-down pass rate, neutral pass rate, pass rate over expected (if verified), EPA/dropback, passing success, explosive-pass rate, yards/attempt, adjusted net yards/attempt if supported, pressure-to-sack rate, CPOE/accuracy proxies, completion rate, average depth of target, air-yards distribution, sack rates, turnover-worthy proxies only if observed, yards after catch, red-zone passing, third-down passing, negative plays and pace.
+
+**Rushing offense:** designed rush attempts/game, yards/game, yards/carry, EPA/rush, rushing success, explosive-rush rate, negative-run rate, short-yardage conversion, goal-line success, personnel/run-concept splits only if supported, RB versus QB scrambles, score-state dependence, and OL contribution proxies.
+
+**Passing defense:** opponent-adjusted EPA/dropback allowed, success rate, explosive pass rate, pressure/blitz and sacks, separation between actual QB/receiver skill and defensive role where possible, man/zone and single/two-high tendencies only when observed, coverage outcomes vs position/route/depth only when properly measured, red-zone passing allowed, completions/attempt adjusted for opposing volume and strength, CB/S/LB personnel rotation.
+
+**Rushing defense:** opponent-adjusted EPA/rush allowed, yards/carry, rushing success allowed, explosive rushing, tackles for loss, missed tackles if available, goal-line run success allowed, box counts, defensive front and personnel, scheme alignment with outside/inside zone or gap runs only if verified.
+
+**Situational:** plays per drive, drives/game, seconds/play where measurable, no-huddle rate, field position, red-zone trips/TD rate, fourth down aggressiveness, time of possession as contextual rather than causal measure, turnover rates (with regression), home/away, rest, travel and time zone, dome/outdoors, weather and gusts, special teams/field position, opponent historical quality and recent coaching shifts.
+
+Create `team_report` computing at least per-team: season-to-date rank and percentile by passing offense, rushing offense, passing defense, rushing defense using **both efficiency and volume metrics**. Also supply last 3/5 games with explicit sample and strength of opposition. Where recent results contradict full-season form, discuss structural change versus noise.
+
+Use fair baselines: full prior season as prior with regression, current season weighted by sample and role stability, and opponent-adjusted comparisons. Beware score differential/game script confounding volume ranks. Don't present “defense allows most WR yards” without separating WR targets faced and per-target efficiency.
+
+---
+
+## 7. SCHEME, COACHING, FORMATIONS, COVERAGE, AND PLAY CALLING
+
+This layer is a major differentiator. Build a **source-verified matrix** examining how Team A actually attacks and how Team B actually defends; reverse for Team B offense. Use the richest legitimate accessible data, not invented proprietary splits.
+
+**Offensive coaching:** head coach, OC, actual play caller and changes; neutral/early-down pass rate, PROE, pace, pass frequency leading/trailing, red-zone/goal-line calls, motion, shifts, no-huddle, play action, shotgun/pistol/under center, screens/RPOs, max protect, designed QB runs, vertical versus short passing, inside/outside zone and gap/power schemes where verifiable, personnel 11/12/13/21/22, bunch/stack, condensed splits, tight-end blocking/route usage, halftime and opponent-based adjustments where supported.
+
+**Defensive coaching:** DC and actual caller, coverage family (Cover 0/1/2/3/4/6/quarters/2-man) *only for observed charted relevant periods*, man versus zone, 1-high/2-high, disguise and post-snap rotations, press/off, blitz and simulated pressure, front/box structures, nickel/dime, run fits, stunts, safety and linebacker coverage responsibilities, brackets/doubles, shadow CB habits, coverage change after injured starters, tendencies by down/distance and score.
+
+**Interaction:** Which plays, route families, depth zones, run concepts and personnel packages historically stressed the defense? How frequently does this offense actually use them? Who specifically receives the opportunities? Does the defensive coordinator adapt to neutralize it? Does the QB have time for it given OL/edge matchups? Is a reputed “coverage mismatch” large enough *and likely enough to be targeted* to matter to a particular line? Coverage rankings from noncomparable sources must not be mixed.
+
+Build a **Scheme Evidence Matrix** with columns: claim, observed source/stat, opposing scheme, frequency/sample, projected opportunity impact, uncertainty, counter-adjustment, data grade, available-as-of date. If current-year coverage cannot be observed, clearly mark **historical scheme proxy** and prohibit precise contemporary coverage claims.
+
+Do not fabricate snap-level WR-vs-CB routes or expected shadow rate; separate direct man coverage observations, scouting reports, alignment overlap, and conjecture. Safety help and brackets invalidate a naïve “WR1 against CB2” assumption.
+
+---
+
+## 8. OFFENSIVE LINE VS DEFENSIVE LINE: BOTH TEAMS
+
+This is not an optional generic paragraph. Produce both **OL_A versus DL_B** and **OL_B versus DL_A**; differentiate individual tackles, interior OL, and edge/interior rushers.
+
+Seek verified lineup/injuries, pressures allowed/gained, sack rates, blitz rate vs non-blitz pressure, pass block win rate/run block win rate when actually accessible, pressure-to-sack conversion, time to throw, QB propensity to hold, quick game/play action/max protect adaptation, defensive rush allocation, box counts, gaps and run fits, short-yardage, rushing direction and designed run concepts only when measured. Note pressure and sacks are shared QB/OL/coverage effects; do not automatically attribute sack rates solely to linemen.
+
+Translate line matchups into concrete effects on dropback volume, pressure quality, route depth, explosive play probability, third downs, expected drives, RB efficiency, designed QB runs and end-zone opportunities. If one blocker is injured, quantify effect cautiously using historical backup snaps/relevant evidence, or show scenarios without inventing a percentage.
+
+Distinguish volume metrics from talent evaluation; don't label a pass rush weak merely because few sacks occurred in a small, quick-release sample.
+
+---
+
+## 9. PLAYER PROPS: ROLE, OPPORTUNITY, AND INDIVIDUAL ASSIGNMENTS
+
+All player analysis must start with the **expected role** and opportunities, not last five scores. Include team roster/availability check before processing props.
+
+**WR:** snaps, routes, route participation %, aligned outside/slot if supported, target share, targets/route, air yards, aDOT, target depth distribution, catchable targets, primary/first-read targets where actually charted (FTN `read_thrown == 0` is for throws, not all first reads on unthrown routes), red zone/end zone, designed touches, target competition, YAC, contested catches, missed tackles, role/teammate changes, coverage-scheme sensitivity, and expected pass volume. Separate *targets earned* from *yardage efficiency*.
+
+**WR vs DB and safeties:** research offense WR alignments, defense corner sides/slot, credible shadow tendencies, player injury/substitutions, CB press/off reputation with defensible data, safety shade/brackets, LB zone leverage, coverage rotations, relevant route/depth vulnerabilities, and whether coordinator/offense schematically isolates or moves the WR. Output a table of **possible matchups with evidence grade**, not a fake “assigned corner” certainty. Full participation/coverage data and film may be unavailable in-season. When so, say exact routes against a named CB, coverage splits, separation and shadow percentages are not currently verified.
+
+**RB:** designed carries/game and share, early-down/third-down/two-minute/goal-line usage, pass targets/routes, backups, protection responsibilities, scheme/run-concept compatibility, OL injuries, expected team rush total, box counts, YPC variance and goal-line competition; game-state distribution. Account for touchdown dependency and passing-down substitution.
+
+**QB:** expected dropbacks/attempts, pace, neutral pass tendencies, on-target and depth distribution where real, EPA/CPOE, performance under actual verified pressure, scramble and sack risk, weapons availability, blitz adaptation, OL protection, pass funnel, likely game-state variance, play calling and weather.
+
+**TE:** routes versus blocking, personnel usage, slot/in-line deployment when verified, targets/route and coverage-zone fit, linebackers/safeties, RZ targets, WR absences, play-action and short-area personnel packages.
+
+**Defenders and key specialists** when relevant: CBs, safeties, linebackers, edge defenders, interior DL, tackles and guards, primary special teams only if market requires. Focus on market-relevant interaction.
+
+**Never use hit-rate streaks as probability.** Player hitting a line 5/5 times is a descriptive small sample. Decompose why: role, attempts, target earning, opponent, price change, injury, game states, effective sample size, regression to mean, selection bias and sustainability. Compare last 3/5/10 vs entire 2026 season vs prior years only with an explicit rationale, shrinkage and pre-registered features. A prop can be likely to hit but be a terrible price. Refuse arbitrary “80% because 4/5 hits.”
+
+---
+
+## 10. INJURY/LINEUP, WEATHER, MOTIVATION, NEWS, AND REAL-WORLD CONTEXT
+
+Create an up-to-date `news/injury` checklist (with source and access timestamps) covering official practice reports, actives/inactives near kickoff, questionable players, starting OL, QB, receivers, CBs, safety/linebacker rotations, coach changes, new play callers, trades, practice limitations, recoveries, pitch counts, and offensive package shifts. Clearly note which items Codex can retrieve versus which require user-provided links or manual checks. Do not falsely imply continuous real-time monitoring.
+
+Weather: game-local kickoff window, stadium roof, precipitation, wind/gusts/direction, temperature, conditions during the game; report uncertain forecast sources. Don't apply a generic weather penalty without measured justification and validation.
+
+Game script: initial win probability/total and team strengths, sensitivity to early lead and clock, pace, possessions, pass/run shift; avoid double counting game script already embedded in market total/team spread and efficiency variables.
+
+Coaching/motivation/narratives must be carefully downgraded. “Revenge game,” “must win,” past head-to-head and hype are not causal evidence without measurable effects. Avoid unknowable internal team plans presented as facts.
+
+---
+
+## 11. SIGNAL PRIORITY AND WEIGHTING: MEASUREMENT-DRIVEN, NOT MADE-UP SCORES
+
+The user values a scoring rubric, but **do not invent arbitrary fixed weights such as injuries 25%, matchup 30%, recent form 20%** and pass the resulting sum off as a calibrated betting probability. This creates false precision, double counting and misleading output.
+
+Instead implement **two distinct systems**:
+
+**A. Evidence quality and investigation-priority matrix (NOT a probability model):** assign a transparent grade to each materially used signal: 
+
+- `A`: reliable current primary-source quantitative observation, clearly defined, sample and timestamp adequate.
+- `B`: credible directly relevant evidence with moderate sample/freshness constraints or robust derived statistic.
+- `C`: historical proxy, small-sample split, sourced qualitative observation, or unresolved contextual confounding.
+- `D`: speculation, unverifiable assignment, stale data, or unsupported metric; NEVER drive a numerical edge from it.
+
+Also label **materiality** high/medium/low and **independence** (highly correlated vs new information). Research first where materiality × uncertainty could actually change the decision. High-materiality D-grade coverage “matchups” should lead to a missing-data warning/PASS, not a confident forecast. Cite data and counterarguments.
+
+**B. Actual probabilistic model:** estimate weights/coefficients on temporally separated historical data with regularization/shrinkage and robust validation. Begin with transparent *baseline* based on team expected play volume, player opportunity share, efficiency, variance and actual opponent. Introduce season-to-date metrics, scheme/charting, weather, injury and roster features only when point-in-time data exists and incremental **out-of-sample** validation supports them. Predefine how two related features overlap and avoid counting the same signal twice (e.g. opposing pass yards allowed and passing EPA allowed; red-zone targets and TD rate; pressure and sacks).
+
+Default feature preference **without fixed numerical weights**: (1) current verified active role/injury + expected volume; (2) opponent-adjusted efficiency/usage; (3) line and coverage interactions supported by actual data; (4) context/weather/game script; (5) recent outcomes only as properly regressed supporting observations. **Actual learned weights are mandatory to audit and can be zero.** If insufficient training data, retain simple baseline + scenarios and mark advanced scheme conclusion qualitative/uncertain.
+
+Do not convert evidence grades or heuristic scores directly to claimed 65%/73% probabilities. The market is a strong baseline; compare any model with market implied fair probability and present both, not force a market blend before validation. The “rubric” should also power a preflight checklist and a PASS gate.
+
+---
+
+## 12. MODELING, MONTE CARLO, DISTRIBUTIONS, AND CALIBRATION
+
+**Yes: implement Monte Carlo, but only where the underlying data-generating assumptions have been reasonably tested.** A million bad simulations do not fix a bad workload assumption. Make it a quantitative research tool, not impressive theatrics.
+
+Start with simpler baselines: empirical Bayes / regularized averages, opponent-adjusted team EPA, anticipated plays/possessions and role opportunity, regression-based expected attempts/targets/carries, distributional outcome models. Use mathematically suitable forms for counts, yards, zero-inflated props/TDs, and tail events; avoid universal normal distributions or false independence.
+
+**Mechanistic simulation, conditional on measured inputs:**
+
+1. Sample team possessions/plays and score/game-state path from validated pace and offensive/defensive distributions.
+2. Sample dropbacks versus rush attempts based on pregame play-calling and simulated score, with uncertainty.
+3. Sample individual targets/routes/carries from opportunity-share distributions, ensuring opportunities sum to realistic team totals and injury/teammate scenarios remain coherent.
+4. Sample catches/yardage/TD opportunities conditional on player efficiency, air yards/target depth, opponent/OL matchup and credible conditions; enforce physically and probabilistically coherent outcomes.
+5. Link players and teams to shared drives, pass volume, possessions, weather and injury scenarios so same-game prop covariance exists naturally.
+6. Record per-prop probability, expected value, quantiles (e.g. 10th/50th/90th), credible/prediction intervals, distribution tails and dependencies. Separate Monte Carlo **sampling error** from **uncertainty about model parameters** and missing data.
+
+Use deterministic RNG seed, adaptive simulation counts (initial 10k; increase to e.g. 50k/100k where tails/decision thresholds justify), convergence and stability checks. A single reported 71.46% is not defensible unless model validation and parameter uncertainty support that precision. Report probability ranges or scenarios when uncertainty is material.
+
+**A/B test Monte Carlo against baseline and market.** Walk-forward split chronologically, use only as-of data, compare model forecast versus actual via MAE, Brier/log loss, calibration error, reliability bins, prediction interval coverage, CRPS when relevant, and ranked probability skill. Report performance by season/market/position/odds bin/edge size and injury/uncertainty bucket. Analyze how it fares after actual bookmaker vig. No claim of genuine betting edge until robust forward validation with timestamped quotes/CLV and appropriate uncertainty. Do not retrospectively select only historically successful legs; control selection and multiple-hypothesis biases.
+
+If 2026 deep coverage charting isn't accessible, do not simulate it as if observed; supply model scenarios with explicitly uncertain proxies or PASS.
+
+---
+
+## 13. SPORTSBOOK MARKETS, PRICING, CASH-OUTS, AND DECISION RULES
+
+Implement exact mathematically tested American odds handling, including implied breakeven rates, plus/minus odds, fractional payouts, commissions/fees where relevant, two-sided de-vig when both sides are known, pushes/voids, alternative milestones, anytime TD, game moneyline/spread/total, SGP correlated legs, and different settlement rules across FanDuel, Kalshi and other user-provided sources. **FanDuel TO WIN is profit; payout includes principal.** Do not conflate either.
+
+- Positive American +a -> implied `100/(a+100)`; negative -a -> implied `a/(a+100)` with `a = abs(odds)`.
+- A $stake win at +a returns stake + stake*a/100; -a returns stake + stake*100/a.
+- `EV = P(win)*net_profit_if_win - P(loss)*stake` with explicit push/void treatment and fees. This is NOT meaningful if probabilities are unvalidated.
+- `cashout_hold_threshold = offered_cashout / possible_total_payout` **only if no other residual partial outcomes and full ticket pays all-or-nothing**; adjust for partial cash-outs/refunds, fees and conditional results otherwise. Compare the threshold to the JOINT probability all remaining legs settle successfully, not one highlighted player leg unless all others are already final.
+
+For each market calculate current price, timestamp, implied rate, optional de-vig benchmark, model point and uncertainty interval, baseline model, price sensitivity, conservative or plausible EV range, counter-case, and PASS/VALUE CANDIDATE. Distinguish *high hit probability* versus *positive value*: a 75% over at -500 is not attractive merely because it is likely.
+
+**Qualification gates:** missing price => `INSUFFICIENT PRICE / NO EV`; stale or conflicting injury => `PASS or CONDITIONAL`; missing essential route/coverage data => do not invent an edge; model not validated for market => `RESEARCH-ONLY`; model interval crossing break-even after errors/uncertainty => `MARGINAL/PASS`; multiple independent robust model checks plus confirmed price may merit `VALUE CANDIDATE` (not a command to wager). Require explicit explanation of what would invalidate a proposed advantage.
+
+**PASS without apology.** If the slate has no qualifying prices, answer that there are none. Do not force three legs to hit +200, add an arbitrary touchdown to reach 3x, or identify a bet for each matchup. Rank evaluated candidates by *robustness* not point-estimate EV. The output should show candidates rejected and WHY.
+
+**SGPs:** never multiply marginal hit rates without testing correlation. Use actual quoted SGP price to evaluate value; account for shared game-script, same-team passing volume, touchdown competition, injury concentration, overlapping thresholds, and portfolio duplication. Multiple tickets containing the same player are correlated exposures, not independent bets.
+
+**Bankroll:** do not set or manipulate real stakes automatically, do not chase losses, no Kelly recommendations absent validated probabilities and an explicitly defined discretionary bankroll and loss limit. Do not mistake “missed hypothetical payout after cashout” for a realized financial loss. Distinguish expected-value decision from emotional/risk-reduction preferences; holding a ticket that loses is not automatically a bad decision.
+
+---
+
+## 14. EXHAUSTIVE SLATE RESEARCH WITH EFFICIENT ATTENTION
+
+Create a `slate` workflow that **screens every NFL game requested**, with two-pass depth:
+
+**Pass I — Comprehensive structured screen for ALL games:** updated team rankings in offensive/defensive passing/rushing efficiency AND per-game volume, injures, starting OL/DB/skill changes, scheme/formation tendencies where observed, offensive/defensive coordinator changes, top RB/WR/TE usage roles, pace, red-zone rates, opponent quality, matchup sensitivities, weather/venue, game script, line availability. Record every game with data freshness and candidate research opportunities; no cherry-picked “3 best” before screening all.
+
+**Pass II — Deep investigative dossiers:** expand high-uncertainty/high-materiality situations where a verified, potentially impactful mismatch could exist AND there is a real price to test. Execute target/route and rush splits, historical comparable defenses, man/zone/shell data if valid, DB/S/LB constraints, OL-vs-DL breakdown both directions, injury-contingent snaps, red-zone competition, coaching adjustments, alternative scenarios, full model distribution/MC where justified, market price and skeptical audit. Also deep dive any game the user expressly names, even if final answer PASS.
+
+**No cherry-picking:** keep a research trail of every market scanned, not just positive outcomes. Avoid 200 redundant correlated data points masquerading as 200 independent signals. Label **potential primary exploit**, **reasons it might fail**, **counteradjustments**, and **pricing already incorporates**. Capture source timestamps and uncertainty.
+
+If too many markets/data gaps, openly bound scope rather than claim every player was exhaustively checked. Process all games at screen level and prioritize high-value investigational detail with clear coverage reporting.
+
+---
+
+## 15. LIVE MODE, INJURY INTERRUPTION, REMAINING OPPORTUNITIES, AND HEDGING
+
+Live research only if actual current live feeds exist or user provides timestamped screenshot/stat. If not, refuse to state exact current down, drive, snap count or player targets. Game clock/time, score, possessions remaining, actual routes/snaps when reliable, expected team pass/rush frequency, player health/return status and changed coaching tendencies are required to meaningfully update live estimates. Do not treat a first-half zero as proof a full-game receptions bet is doomed; forecast remaining route opportunities/targets, not simply extrapolate 0.
+
+Track *information lag* and label stale. Live sportsbook prices must be confirmed, not invented. Odds may move too fast for slow models; recommend PASS if they cannot be verified before decision. Recalculate joint remaining-leg probabilities for cash-out; distinguish stake at risk, available offer, realized P/L, opportunity cost and personal utility. Injury/void rules vary by specific sportsbook and promo; never infer that a player being hurt means a void without checking ticket terms.
+
+Do not run unauthorized continuous background monitors or automatic bets. Optional manual refresh workflow only. If scheduled execution is later explicitly configured, log every source poll and failure and comply with provider rate limits.
+
+---
+
+## 16. RESEARCH OUTPUT FORMAT: AN NFL SCOUT + QUANT + SKEPTIC
+
+For each requested game or slate produce a concise executive summary followed by genuinely deep appendices. Do not let a polished narrative conceal incomplete research.
+
+**Header:** Game/date/kickoff and source-as-of timestamp; source inventory; feature/data completeness; research-only or validated-model status.
+
+**Team dossier side-by-side:** Passing O/D, rushing O/D with ranks, efficient vs volume contrasts and denominators; neutral pass rate, EPA/success/explosives, time/pace, red zone, OL/DL two-way vulnerabilities, coaches/formation/coverage evidence, key injuries, projected shifts and missing signals.
+
+**Player-mismatch evidence table:** Player + role/alignment; defender/group expected, direct vs proxy evidence and grade; coverage/front formation interaction; projected targets/carries; red-zone opportunity; scheme counter; why opponent data is or isn't relevant; plausible failure mode.
+
+**Market comparison:** Prop/line/odds/book/timestamp, model projection and interval, historical sample, simulated or analytical hit probability with uncertainty, market implied, optional no-vig, EV conditional on validity, robustness under conservative scenario, verdict `VALUE CANDIDATE / MARGINAL / PASS / INSUFFICIENT DATA / RESEARCH-ONLY`.
+
+**Adversarial review (“red team”)**: before final verdict, independently list at least three credible ways the analysis could be wrong: usage role uncertainty, scheme counter-adjustment, offensive line, injury, weather, opponent strength, small sample, market already priced in, player-vs-defender assignment misleading. Explicitly evaluate them and update verdict without anchoring.
+
+**Source appendix**: URLs or nflverse dataset/version and dates, provenance of each important metric, sample sizes and definitions, stale/unavailable items. Separate confirmed assignments from projections, real measurements from probability estimates, and market price from intrinsic value.
+
+**Conclusions:** Let the user ask for comprehensive analysis of a game even when bet classification is PASS. If no bets qualify, state NONE and identify data/price conditions that could justify re-evaluation. No performative certainty.
+
+---
+
+## 17. PERSISTENT TICKET LEDGER, FINANCIAL RECONCILIATION, AND POSTMORTEMS
+
+Design event-sourced or append-only storage rather than overwriting history. Canonical records:
+
+- Research: `research_id`, created and as-of timestamps, game/player/market, exact line/odds/book/market availability, source hashes, historical inputs, model version, prior probability range, decision, reasons, uncertainties, and no-bet candidates.
+- Tickets: unique user-supplied `ticket_id` or internal ID, owner (`mine` vs `someone_else`), submission time, each leg, market rules, stake, stake-funded-by-other-cashout note if relevant, potential total payout, sportsbook (without account credentials).
+- Transaction ledger: **stake debit once**, settlement/return/cash-out credit once, partial cash-outs and refunds if applicable; imported screenshots and duplicates tracked by stable hash; user corrections append amendments rather than rewriting old history.
+- Results: actual final stat/outcome and source time, leg success/fail/push/void, ticket settled result, realized net P/L, fees/commissions, open exposure, account deposits/withdrawals only if user supplies them.
+- Postmortem: original evidence locked; outcome; what held/failed; process grade; injury/new data unknown at decision; model calibration error; claim audit; proposed improvements; verified vs unverified changes.
+
+**Financial formulas and safeguards:** Daily P/L = sum(actual settled return/cash-out/refund credits) - sum(actual stakes debited), **for all tickets placed that day**; open stakes remain outflows until settlement, and separately report realized P/L closed-ticket subset, unrealized/open risk, and full-day cash flow. Date/time zone and ownership explicit. Net bankroll change may include deposits, withdrawals, bonuses, prior-day tickets, so do not infer daily P/L solely from ending balance. Distinguish `to_win`, stake returned, full payout, profit, and counterfactual foregone payout. Never count resettled cash-outs as additional losing bets or count a hypothetical maximum payout as realized revenue.
+
+Support screenshot transcription via **user-confirmed values**; no guessed missing cropped tickets. Export CSV and short audit report. For live parlay, show full overlap with other tickets (same player/game dependencies), current exposure and potential value not guaranteed profit.
+
+After ticket settles, **record one structured postmortem** and update aggregated model metrics. Classify: `good process / good result`, `good process / bad result`, `bad process / good result`, `bad process / bad result`. A lucky hit never validates a flawed method; an unpredictable injury need not mean a poor pregame handicap. Never alter recorded pregame forecast after game. Keep speculative improvements in `EXPERIMENT_LOG` until separate walk-forward/forward tests validate them. Do not quietly “learn” from one anecdote by inflating matching feature weights.
+
+**Persistent memory retrieval:** Before analyzing a prop/game, search the project memory for comparable scheme matchups, prior model error types, player-specific role/injury changes, past cash-out mistakes, and any validated feature update; mention applicable lessons and caveats. Retrieval is NOT proof; old lessons cannot override contemporary data. Use a light full-text searchable index if useful; avoid external vector DB/RAG infrastructure until genuinely needed. If outcome data is unavailable, request user records instead of pretending Codex monitored the game automatically.
+
+**Recurring evaluation:** Upon user request, generate weekly audit including Brier/calibration by market, all recommendations versus no-bets (selection bias), CLV only with real timestamped prices, ROI for actual bets, ROI hypothetical if defined, number of observations, risk exposure, unverified cases, recurring failure modes and tested improvements. Protect original test seasons; never tune endlessly on the same holdout.
+
+---
+
+## 18. HISTORICAL CASE STUDIES FROM MY OCTOBER 18, 2026 NFL SESSION
+
+Create `memory/CASE_STUDIES.md` containing this **USER-REPORTED, NOT FULLY INDEPENDENTLY VERIFIED** session summary. Never alter original predictions based on after-the-fact game stats.
+
+**Green Bay vs Dallas:** research proposed Matthew Golden as a potential WR matchup exploit based on target/usage and claimed man-coverage advantages and Dallas coverage characteristics. Golden reportedly exceeded 100 receiving yards and scored a TD. **Important:** audit whether the claimed player-by-player man/zone data was genuinely available; a good outcome is NOT proof the specific coverage premise was correct or replicable. Future model should demand observation, route context, safety help and usage before declaring such an advantage.
+
+**Javonte Williams anytime TD, Jordan Love/Golden receiving/passing markets:** evaluate role, price, correlations and touchdowns separate from yardage. **George Pickens live receiving** and early-game underproduction show the importance of remaining opportunities and expected game script. A previous suggestion to cash out a ticket before Pickens eventually cleared should be reviewed as an as-of probability decision, not automatically stamped wrong because the bet later hit.
+
+**MarShawn Lloyd:** a $100 ticket failed partly due to an in-game injury/limited participation. Do not assume a void unless the sportsbook's specific rules apply. Separate unforecastable injury realization from a poorly estimated prior injury risk and exposure concentration.
+
+**Tyler Higbee / James Cook / Isaiah Likely:** slow in-game box-score starts contributed to cash-outs on tickets whose original conditions reportedly later hit. Track actual return versus counterfactual full payout separately. Never chase forgone potential payouts as recoverable money. Before live cash-out recommend, compute offer/full-payout implied threshold and compare to as-of joint probability with remaining possessions, routes/targets/carries and risk preferences.
+
+**Parlay exposure:** multiple tickets reused Golden and Packers outcomes; nominally separate stakes hid concentration. Distinguish correct matchup reads from bad combined ticket construction, bad prices, excessive stakes, and cash-out process.
+
+**Prior conversational ledger estimate:** The day was provisionally summarized as +$88.39, subject to reconciliation of *all* tickets. Do NOT treat this as audited actual P/L without a complete user-confirmed transaction export. Record exact raw ticket data only after import and verification.
+
+Default to avoiding overconfidence, loss chasing, constructing odds-target parlays, and outcome-based rationalization.
+
+---
+
+## 19. TEST SUITE / ACCEPTANCE GATES
+
+Write automated tests for: all American odds cases, positive/negative and stake/payout; break-even odds and vig; full and partial cash-out; fees; push/void/win/loss; alternative milestone settlements; parlay correlation (do not assume independence), player team ID matching/trades, roster changes, source validity/expected columns, stale timestamp gating, missing values versus zero, timezone and as-of, no future information leaking into historical predictions, no invented metric handling, stable model seed and simulated team-opportunity conservation, MC convergence, probability bounds and calibration outputs, PASS gates with missing odds/critical evidence, full-slate screen game coverage, durable postmortem and no retrospective overwrite, transaction reconciliation and de-duplication.
+
+**Golden-master numeric fixtures:** -110 -> 52.38095% breakeven. $96 cashout versus $243.99 full payout -> ~39.346% conditional hold threshold (not guaranteed true probability). A +160 price implies 38.4615% breakeven. 5-of-5 prior hits must not turn into 100% modeled probability. No coverage data means never invent man/zone or named-CB shadow percentages. No odds means no claimed EV. Same-game correlated props are never implicitly independent. An injured player is not automatically a void.
+
+Validation should include: tests executed with real public historical data (when accessible) and isolated synthetic fixtures for unit correctness; audited `MODEL_CARD.md` with genuine training seasons, holdout seasons, feature definitions, known failure classes, uncertainty coverage and out-of-sample baselines; `DATA_CATALOG.md` with actual latest current-season week; at least one reproducible full report from a truly completed historical game. Execute tests and report actual counts, never claim comprehensive validation merely because unit tests passed.
+
+---
+
+## 20. NATURAL-LANGUAGE COMMANDS AND MOBILE UX
+
+Provide one CLI entrypoint and instructions so I can tell Codex naturally to run:
+
+- `doctor`: health, dependencies, data coverage and source freshness.
+- `refresh`: legally pull accessible current datasets, print retrieval lag and missing weeks.
+- `slate --season --week`: screen EVERY game and selectively deep-dive credible mismatches; include PASSes.
+- `game TEAM1 TEAM2 --asof`: full two-way team and scheme/line matchup research.
+- `player NAME`: role, opportunity and injury/teammate effects.
+- `prop NAME MARKET LINE ODDS --opp`: rigorous probability/EV/uncertainty/price check, with reasoned PASS.
+- `compare`: evaluate alternative lines and prices and sensitivity.
+- `parlay`: joint-risk/correlation check against actual SGP quote.
+- `live`: updated state only with verified timely source or supplied screenshot.
+- `cashout`: compare genuine current offer to all remaining conditions and risk.
+- `record`: immutable research/ticket record.
+- `settle`: verified actual settlement and user-confirmed financial record.
+- `review --week`: weekly model, process, and bankroll-risk postmortem.
+- `memory query`: retrieve comparable past cases and tested lessons.
+
+Each research command should emit a readable Markdown report and machine-readable JSON, include data-as-of timestamp and the exact code/model revision. Report any skipped sections and why. Avoid terminal server/UI dependency for first use. Do not ask me to memorize commands: support requests such as “Research all NFL games this Sunday and pass if nothing is mispriced,” or “Analyze Golden 70+ receiving at -150 with the actual secondary injury reports.”
+
+If an interface can be provided later without recurring cost, propose it separately; no need to build a full Streamlit hosted app on day one. Prepare a clear, low-maintenance onboarding document for mobile Codex tasks.
+
+---
+
+## 21. OPERATING REVIEW: ANALYST / QUANT / DATA AUDITOR / SKEPTIC / RISK
+
+For each candidate, run a *sequential internal review*, not five paid AI agents:
+
+1. **Data auditor** confirms player/team/date, freshness, sources and availability; rejects fabricated/obsolete facts.
+2. **Football analyst** identifies concrete opportunity drivers, scheme interactions, OL/DL mismatches, coaching and plausible opponent response.
+3. **Quant analyst** estimates outcome distribution, uncertainty and point-in-time validity and checks calibration against simpler/market baseline.
+4. **Market skeptic** asks why sportsbook price may already be correct, how the edge changes under different defensible assumptions, and what data remains missing.
+5. **Risk/accounting reviewer** checks correlated exposures, rule settlement, stake/economic context and PASS decision correctness.
+
+Reviewers have vetoes for unsupported facts and missing critical price/probability data. Their purpose is to challenge claims, not generate different confident votes. Show a brief contradiction log and **rejected hypotheses** in each report. If any essential input fails, qualify report as research-only or PASS.
+
+**The most important outcome is a defensible decision, including no bet.**
+
+---
+
+## 22. BUDGET, SECURITY, LIFECYCLE AND KNOWN LIMITATIONS
+
+- ChatGPT Plus subscription is NOT OpenAI API credit and does NOT pay data-vendor APIs. Do not assume Codex can directly run the code outside its allowed environment; verify permissions and capabilities.
+- No spending, subscription signup, sportsbook login, automated wagers, account automation, credentials in Git, prohibited scraping, or hidden external services.
+- Codex Cloud tasks use isolated workspaces and environment publication; important code/lessons must be committed. Don't promise automatic 24/7 updates or self-learning between sessions unless separately provisioned and approved.
+- Do not build dozens of “agents” whose only purpose is to create complexity. Prefer source-backed computations and deterministic rules, with one Codex agent orchestrating the research.
+- Premium coverage shells, WR/CB routes, true matchup tracking, offensive-line pass-block win rates, defense run-fit assignments or live snap tracking may be inaccessible. This is a data limitation, not something more assertive wording can solve.
+- An uncalibrated Monte Carlo or a sophisticated-looking probability is not an edge. Be conservative; paper-trade and compare to market prices over meaningful samples before treating model outputs as financial guidance.
+
+---
+
+## 23. REQUIRED MULTI-STAGE DELIVERABLE AND FINAL REPORT — START IMMEDIATELY
+
+**DO THE WORK NOW, NOT JUST A PLAN.**
+
+**Stage A / immediate:** set up Python, `nflreadpy`, real data sources, as-of catalog, weekly 2026 freshness check, game/team/player statistics, odds math, ledger/memory, docs and unit tests. Commit and demonstrate working results.
+
+**Stage B:** derived opponent-adjusted metrics, pace and player-opportunity priors, both-ways OL/DL evidence proxies, injuries/coach context and source-verified FTN formation/scheme charting, honest WR/DB alignment scenarios. Write one complete matchup report and red-team audit.
+
+**Stage C:** conditional workload distribution, simple baselines, calibrated MC with coherent drives/targets/carries, probabilistic uncertainty, parlay covariance, price comparison, PASS gates, chronological backtesting and recorded model limitations.
+
+**Stage D:** full-slate screening, live/manual screenshot import, settlement and cash-out updates, queryable lessons, weekly review, iPhone-friendly repeatable tasks; optional quota-controlled odds integration if I separately approve.
+
+At each stage produce a checkpoint: files/commit hash; installed deps and versions; real input seasons and latest week; exact working data columns and absent ones; source provenance; tests actually run and results; real end-to-end demonstration (dated, reproducible); current limitations; next minimum manual step; and **what must NOT be trusted yet**.
+
+**Initial concrete success criteria:** I should be able to open Codex and request: “Analyze the next NFL slate with real current data, review the two-way line and scheme matchups, shortlist only defensible player-market hypotheses, quantify uncertainty and tell me explicitly where to PASS.” It must truthfully explain when the required coverage/odds/injury data is unavailable rather than manufacture a bet. It must save the report and later link the original hypotheses to actual outcomes, without changing the original prediction.
+
+**FINAL DIRECTIVE: Investigate deeply. Separate observation from inference. Learn weights from valid historical evidence, not arbitrary percentages. Simulate only defensible inputs. Challenge every apparent edge. Never force a wager. Preserve decisions and postmortems permanently. Improve the code only after controlled validation.**
